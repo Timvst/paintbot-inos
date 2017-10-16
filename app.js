@@ -137,6 +137,8 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
  * API examples routes.
  */
 app.get('/api', apiController.getApi);
+app.get('/api/upload', apiController.getFileUpload);
+app.post('/api/upload', upload.single('myFile'), apiController.postFileUpload);
 
 
 /**
