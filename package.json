@@ -1,12 +1,9 @@
 {
-  "name": "hackathon-starter",
-  "version": "4.3.0",
-  "description": "A boilerplate for Node.js web applications",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/sahat/hackathon-starter.git"
-  },
-  "author": "Sahat Yalkabov",
+  "name": "paintbot-inos",
+  "version": "0.0.1",
+  "description": "Tool to add paintbot items to database",
+  "repository": "localhost",
+  "author": "Tim van Steenbergen",
   "license": "MIT",
   "scripts": {
     "start": "node app.js",
@@ -94,5 +91,7 @@
     "plugins": [
       "chai-friendly"
     ]
-  }
+  },
+  "main": "app.js",
+  "private": false
 }
