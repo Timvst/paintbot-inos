@@ -1,1 +1,1 @@
-paintbot-inos
+PAINTBOT FOR INOS USE
