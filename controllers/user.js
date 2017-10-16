@@ -138,9 +138,6 @@ exports.postUpdateProfile = (req, res, next) => {
     if (err) { return next(err); }
     user.email = req.body.email || '';
     user.profile.name = req.body.name || '';
-    user.profile.gender = req.body.gender || '';
-    user.profile.location = req.body.location || '';
-    user.profile.website = req.body.website || '';
     user.save((err) => {
       if (err) {
         if (err.code === 11000) {
@@ -194,108 +191,7 @@ exports.postDeleteAccount = (req, res, next) => {
   });
 };
 
-/**
- * GET /account/unlink/:provider
- * Unlink OAuth provider.
- */
-exports.getOauthUnlink = (req, res, next) => {
-  const provider = req.params.provider;
-  User.findById(req.user.id, (err, user) => {
-    if (err) { return next(err); }
-    user[provider] = undefined;
-    user.tokens = user.tokens.filter(token => token.kind !== provider);
-    user.save((err) => {
-      if (err) { return next(err); }
-      req.flash('info', { msg: `${provider} account has been unlinked.` });
-      res.redirect('/account');
-    });
-  });
-};
 
-/**
- * GET /reset/:token
- * Reset Password page.
- */
-exports.getReset = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return res.redirect('/');
-  }
-  User
-    .findOne({ passwordResetToken: req.params.token })
-    .where('passwordResetExpires').gt(Date.now())
-    .exec((err, user) => {
-      if (err) { return next(err); }
-      if (!user) {
-        req.flash('errors', { msg: 'Password reset token is invalid or has expired.' });
-        return res.redirect('/forgot');
-      }
-      res.render('account/reset', {
-        title: 'Password Reset'
-      });
-    });
-};
-
-/**
- * POST /reset/:token
- * Process the reset password request.
- */
-exports.postReset = (req, res, next) => {
-  req.assert('password', 'Password must be at least 4 characters long.').len(4);
-  req.assert('confirm', 'Passwords must match.').equals(req.body.password);
-
-  const errors = req.validationErrors();
-
-  if (errors) {
-    req.flash('errors', errors);
-    return res.redirect('back');
-  }
-
-  const resetPassword = () =>
-    User
-      .findOne({ passwordResetToken: req.params.token })
-      .where('passwordResetExpires').gt(Date.now())
-      .then((user) => {
-        if (!user) {
-          req.flash('errors', { msg: 'Password reset token is invalid or has expired.' });
-          return res.redirect('back');
-        }
-        user.password = req.body.password;
-        user.passwordResetToken = undefined;
-        user.passwordResetExpires = undefined;
-        return user.save().then(() => new Promise((resolve, reject) => {
-          req.logIn(user, (err) => {
-            if (err) { return reject(err); }
-            resolve(user);
-          });
-        }));
-      });
-
-  const sendResetPasswordEmail = (user) => {
-    if (!user) { return; }
-    const transporter = nodemailer.createTransport({
-      service: 'SendGrid',
-      auth: {
-        user: process.env.SENDGRID_USER,
-        pass: process.env.SENDGRID_PASSWORD
-      }
-    });
-    const mailOptions = {
-      to: user.email,
-      from: 'hackathon@starter.com',
-      subject: 'Your Hackathon Starter password has been changed',
-      text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
-    };
-    return transporter.sendMail(mailOptions)
-      .then(() => {
-        req.flash('success', { msg: 'Success! Your password has been changed.' });
-      });
-  };
-
-  resetPassword()
-    .then(sendResetPasswordEmail)
-    .then(() => { if (!res.finished) res.redirect('/'); })
-    .catch(err => next(err));
-};
 
 /**
  * GET /forgot
