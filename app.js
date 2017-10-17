@@ -140,7 +140,7 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
  * Item routes.
  */
 app.get('/item/add/:template', itemController.getForm); // hier template parameter toevoegen
-app.post('/item/add', itemController.postForm);
+app.post('/item/add/:template', itemController.postForm);
 
 /**
  * Template routes.
