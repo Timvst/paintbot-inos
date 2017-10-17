@@ -1,0 +1,38 @@
+extends ../layout
+
+block content
+  .page-header
+    h3 Template Form
+
+  form.form-horizontal(method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group
+      label(class='col-sm-2 control-label', for='name') Naam
+      .col-sm-8
+        input.form-control(type='text', name='name', id='name')
+    .form-group
+      label(class='col-sm-2 control-label', for='maxTextfields') Aantal tekstvelden
+      .col-sm-8
+        input.form-control(type='text', name='maxTextfields', id='maxTextfields')
+    .form-group
+      label(class='col-sm-2 control-label', for='maxCharacters') Maximaal aantal tekens
+      .col-sm-8
+        input.form-control(type='text', name='maxCharacters', id='maxCharacters')
+    .form-group
+      label(class='col-sm-2 control-label', for='maxImages') Aantal afbeeldingen
+      .col-sm-8
+        input.form-control(type='text', name='maxImages', id='maxImages')
+    .form-group
+      label(class='col-sm-2 control-label', for='instructions') Instructies
+      .col-sm-8
+        input.form-control(type='text', name='instructions', id='instructions')
+    .form-group
+      label(class='col-sm-2 control-label', for='renderSettings') Render Settings
+      .col-sm-8
+        input.form-control(type='text', name='renderSettings', id='renderSettings')
+
+    .form-group
+      .col-sm-offset-2.col-sm-8
+        button.btn.btn-primary(type='submit')
+          i.fa.fa-envelope
+          | Verstuur

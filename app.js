@@ -33,6 +33,7 @@ dotenv.load({ path: '.env' });
 const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const itemController = require('./controllers/item');
+const templateController = require('./controllers/template');
 const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
 
@@ -138,8 +139,14 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 /**
  * Item routes.
  */
-app.get('/item/add', itemController.getForm); // hier template parameter toevoegen
+app.get('/item/add/:template', itemController.getForm); // hier template parameter toevoegen
 app.post('/item/add', itemController.postForm);
+
+/**
+ * Template routes.
+ */
+app.get('/template/add', templateController.getForm);
+app.post('/template/add', templateController.postForm);
 
 /**
  * API routes

@@ -1,0 +1,10 @@
+hr
+.row
+  each template in templates
+    .col-sm-6        
+      h2= template.name
+      p= template.instructions
+      p
+        a.btn.btn-default(href='item/add/'+template.name, role='button') Maak #{template.name}
+  else
+    li There are no templates.
