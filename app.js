@@ -32,6 +32,7 @@ dotenv.load({ path: '.env' });
  */
 const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
+const itemController = require('./controllers/item');
 const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
 
@@ -86,10 +87,13 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+
+// CSRF whitelist
 app.use((req, res, next) => {
-  if (req.path === '/api/upload') {
+  if (req.path === '/api/items') {
     next();
-  } else {
+  }
+  else {
     lusca.csrf()(req, res, next);
   }
 });
@@ -126,19 +130,22 @@ app.get('/forgot', userController.getForgot);
 app.post('/forgot', userController.postForgot);
 app.get('/signup', userController.getSignup);
 app.post('/signup', userController.postSignup);
-app.get('/contact', contactController.getContact);
-app.post('/contact', contactController.postContact);
 app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
 app.post('/account/profile', passportConfig.isAuthenticated, userController.postUpdateProfile);
 app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 
 /**
- * API examples routes.
+ * Item routes.
  */
-app.get('/api', apiController.getApi);
-app.get('/api/upload', apiController.getFileUpload);
-app.post('/api/upload', upload.single('myFile'), apiController.postFileUpload);
+app.get('/item/add', itemController.getForm); // hier template parameter toevoegen
+app.post('/item/add', itemController.postForm);
+
+/**
+ * API routes
+ */
+app.get('/api/items', apiController.getItems);
+
 
 
 /**

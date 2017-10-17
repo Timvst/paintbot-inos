@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const itemSchema = new mongoose.Schema({
-  inosStoryID: { type: String },
+  inosStoryId: { type: String },
   inosStoryTitle: { type: String },
   template: { type: String },
   field1: { type: String },
