@@ -83,7 +83,10 @@ app.use(session({
     url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
     autoReconnect: true,
     clear_interval: 3600
-  })
+  }),
+  cookie : {
+    maxAge : 1800000 // 30 mins
+  },
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -151,6 +154,7 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
  */
 app.get('/item/add/:template', itemController.getForm); // hier template parameter toevoegen
 app.post('/item/add/:template', itemController.postForm);
+app.get('/items', itemController.getItems);
 
 /**
  * Template routes.

@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+  h1 Items
+  hr
+  .row
+    each item in items
+      li        
+        p= item.title
+        p= item.createdAt
+    else
+      li There are no items.

@@ -17,8 +17,11 @@ const itemSchema = new mongoose.Schema({
   renderStatus: { type: String }
 }, { timestamps: true });
 
+itemSchema.virtual('title').get(function(){
+  return this.inosStoryTitle + '-' + this.template + '-' + this.field1;
+});
 
-
+itemSchema.set('toObject', { virtuals: true });
 
 const item = mongoose.model('item', itemSchema);
 

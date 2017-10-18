@@ -13,10 +13,10 @@
       ul.nav.navbar-nav
         li(class=(title === 'Home') ? 'active' : undefined)
           a(href='/') Home
+        li(class=(title === 'Items') ? 'active' : undefined)
+          a(href='/items') Items
         li(class=(title === 'Template toevoegen') ? 'active' : undefined)
           a(href='/template/add') Template toevoegen
-        li
-          a(href='/status') Serverstatus
       ul.nav.navbar-nav.navbar-right
         if !user
           li(class=(title === 'Login') ? 'active' : undefined)

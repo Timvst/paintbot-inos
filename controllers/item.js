@@ -22,3 +22,17 @@ exports.postForm = (req, res) => {
       }
   });
 };
+
+exports.getItems = (req, res) => {
+  Item.find()
+  .exec(function (err, list_items) {
+    if (err) {
+      return next(err);
+    } else {
+      res.render('item/list', {
+        title: 'Items',
+        items: list_items,
+      });
+    }
+  });
+}

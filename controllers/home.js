@@ -5,10 +5,13 @@ const Template = require('../models/Template');
 */
 exports.index = (req, res) => {
   const sessionData = req.session;
-  sessionData.inosStoryId = req.query.id;
-  sessionData.inosStoryTitle = req.query.title;
 
-  if (!req.query.id) {
+  if (!req.session.inosStoryId) {
+    sessionData.inosStoryId = req.query.id;
+    sessionData.inosStoryTitle = req.query.title;
+  };
+
+  if (!req.session.inosStoryId) {
     req.flash('errors', { msg: 'Geen iNOS-verhaal bekend. Vul de ontbrekende gegevens in' })
     res.redirect('/inos')
   } else {
